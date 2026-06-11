@@ -5,6 +5,9 @@
 #   docker compose up -d --build      # levantar todo
 #   docker compose down               # detener (conserva dashboards de Grafana)
 #   docker compose down -v            # detener y borrar datos (reset total)
+#
+# NOTA: consulta PromQL usa id="/docker" en lugar de name="lab-backend"
+# por incompatibilidad de cAdvisor con Docker Desktop en Windows
 
 services:
   # ----------------------------- Aplicaciones -----------------------------
