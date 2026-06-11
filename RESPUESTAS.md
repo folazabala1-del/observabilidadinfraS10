@@ -69,7 +69,7 @@ docker compose ps
 |---|---|
 | Frontend | http://localhost:8080 |
 | Backend métricas | http://localhost:3001/metrics |
-| Grafana | http://localhost:3000 (admin/admin) |
+| Grafana | http://localhost:3000 (admin123/admin123) |
 | Prometheus | http://localhost:9090 |
 
 ### Verificar dashboard
