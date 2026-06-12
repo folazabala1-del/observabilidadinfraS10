@@ -79,3 +79,30 @@ Esperar a que pase de Normal → Pending → Firing.
 ```bash
 docker compose down -v
 ```
+
+---
+
+## Notas importantes
+
+El dashboard y la alarma no se persisten al hacer `docker compose down -v`.
+Para recrearlos seguir estos pasos:
+
+### Recrear el dashboard
+1. Grafana → Dashboards → New → Add visualization
+2. Panel CPU contenedor: fuente Prometheus, consulta:
+   `sum(rate(container_cpu_usage_seconds_total{id="/docker"}[1m])) * 100`
+3. Panel CPU host: fuente Prometheus, consulta:
+   `100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)`
+4. Panel logs aplicación: fuente Loki, tipo Logs, consulta:
+   `{tier="application"} | json`
+5. Panel logs infraestructura: fuente Loki, tipo Logs, consulta:
+   `{tier="infrastructure"}`
+
+### Recrear la alarma
+1. Alerting → Alert rules → New alert rule
+2. Nombre: `CPU backend > 50%`
+3. Query: `sum(rate(container_cpu_usage_seconds_total{id="/docker"}[1m])) * 100`
+4. Threshold: IS ABOVE 50
+5. Folder: laboratorio, Evaluation group: cpu-alerts, intervalo 10s
+6. Pending period: 30s
+7. Label: severity = warning
